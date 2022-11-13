@@ -11,7 +11,7 @@ pipeline {
             post {
                 success {
                     echo 'INFO Success'
-                    slackSend color: "good", message: "Info Success."
+                    slackSend color: "good", message: "Info Success. commit ${GIT_COMMIT}"
                 }
                 failure {
                     echo 'INFO Failed'
