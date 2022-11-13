@@ -11,11 +11,11 @@ pipeline {
             post {
                 success {
                     echo 'INFO Success'
-                    slackSend color: "good", message: "Info Success"
+                    slackSend color: "good", message: "Info Success."
                 }
                 failure {
                     echo 'INFO Failed'
-                    slackSend color: "danger", message: "Info Failed"
+                    slackSend color: "danger", message: "Info Failed."
                 }
             }
         }
