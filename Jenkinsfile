@@ -4,7 +4,7 @@ pipeline {
         stage('INFO'){
             steps{
                 echo 'Info...'
-                slackSend color: "warning", message: "INFO: Prueba Taller 2 - Modulo 4 Branch: ${GIT_BRANCH}"
+                slackSend color: "warning", message: "INFO: Prueba Taller 3 - Modulo 4 Branch: ${GIT_BRANCH}"
                 //sh './mvnw clean compile -e'
 
             }
@@ -89,23 +89,64 @@ pipeline {
                 }
             }
         }
-        stage('Run'){
+        stage('Sonar'){
             steps{
-                echo 'Running...'
-                slackSend color: "warning", message: "Running..."
-                sh '#./mvnw spring-boot:run -e'
+                echo 'Sonar...'
+                withSonarQubeEnv('sonar-public') { // If you have configured more than one global server connection, you can specify its name
+                    sh './mvnw clean package sonar:sonar'
+                }
             }
             post {
                 success {
-                    echo 'Run Success'
-                    slackSend color: "good", message: "Run Success"   
-                    cleanWs()                 
+                    echo 'SONAR Success'
+                    slackSend color: "good", message: "Sonar Success. Branch: ${GIT_BRANCH}"
                 }
                 failure {
-                    echo 'Run Failed'
-                    slackSend color: "danger", message: "Run Failed"
+                    echo 'SONAR Failed'
+                    slackSend color: "danger", message: "Sonar Failed."
                 }
             }
         }
+        stage('uploadNexus'){
+            steps{
+                echo 'Uploading to Nexus...'
+                slackSend color: "warning", message: "Uploading to Nexus..."
+                sh './mvnw clean install -e'
+                nexusPublisher nexusInstanceId: 'nexus', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: '${WORKSPACE}/build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'fancyWidget', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]'
+                
+                //, tagName: 'build-125
+
+            }
+            post {
+                success {
+                    echo 'Upload Success'
+                    slackSend color: "good", message: "Upload Success"
+                }
+                failure {
+                    echo 'Upload Failed'
+                    slackSend color: "danger", message: "Upload Failed"
+                }
+            }
+
+        }
+        
+        // stage('Run'){
+        //     steps{
+        //         echo 'Running...'
+        //         slackSend color: "warning", message: "Running..."
+        //         sh '#./mvnw spring-boot:run -e'
+        //     }
+        //     post {
+        //         success {
+        //             echo 'Run Success'
+        //             slackSend color: "good", message: "Run Success"   
+        //             // cleanWs()                 
+        //         }
+        //         failure {
+        //             echo 'Run Failed'
+        //             slackSend color: "danger", message: "Run Failed"
+        //         }
+        //     }
+        // }
     }
 }
