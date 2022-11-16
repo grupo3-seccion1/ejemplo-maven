@@ -158,7 +158,7 @@ pipeline {
                 sh 'curl -I http://localhost:8081/rest/mscovid/test?msg=testing > reponse'
                 sh 'cat reponse'
                 scritp {
-                    echo 'CURL...'
+                    println "hello - param yes"
                     // def reponse = readFile 'reponse'
                     // if[[reponse.contains("200"]]{
                     //     echo 'CURL Success'
