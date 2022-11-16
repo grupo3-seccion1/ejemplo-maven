@@ -58,4 +58,32 @@ node {
         slackSend color: "danger", message: "Upload Nexus Failure. Error : " + e 
         throw e
     } finally { }
+    try {
+        stage('Download Nexus Artefact'){
+            echo 'Download Nexus Artefact...'
+            sh 'curl -X GET -u admin:1qazxsw2 https://nexus.danilovidalm.com/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar -O'
+        }
+        slackSend color: "good", message: "Download Nexus Artefact Success. commit"
+    }catch (e) {
+        slackSend color: "danger", message: "Download Nexus Artefact Failure. Error : " + e 
+        throw e
+    } finally { }
+    try {
+        stage('Run Nexus Artefact'){
+            echo 'Run Nexus Artefact...'
+            sh 'nohup java -jar ./DevOpsUsach2020-0.0.1.jar &'
+        }
+        slackSend color: "good", message: "Run Nexus Artefact Success. commit"
+    }catch (e) {
+        slackSend color: "danger", message: "Run Nexus Artefact Failure. Error : " + e 
+        throw e
+    } finally { }
+    try {
+        stage('Test Artefact'){
+            echo 'Test Artefact...'
+            def response = httpRequest 'http://localhost:8081/rest/mscovid/test?msg=testing'
+            echo response.status
+            // sh 'curl -X GET http://localhost:8081/rest/mscovid/test?msg=testing'
+        }
+    }
 }
