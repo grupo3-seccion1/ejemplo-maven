@@ -155,8 +155,15 @@ pipeline {
                 echo 'CURL...'
                 slackSend color: "warning", message: "CURL..."
                 script {
-                    def response = sh 'curl http://localhost:8081/rest/mscovid/test?msg=testing'
-                    echo "Response: ${response}"
+                    def response = sh 'curl http://localhost:8081/rest/mscovid/test?msg=testing' , returnStdout: true
+                    echo response
+                    if (response.contains('testing')) {
+                        echo 'CURL Success'
+                        slackSend color: "good", message: "CURL Success"
+                    } else {
+                        echo 'CURL Failed'
+                        slackSend color: "danger", message: "CURL Failed"
+                    }
                 }
             }
             post {
