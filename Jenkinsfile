@@ -172,7 +172,7 @@ pipeline {
                 echo 'CURL...'
                 slackSend color: "warning", message: "CURL..."
                 script {
-                    def response = httpRequest url: 'http://localhost:8081'
+                    def response = sh 'curl http://localhost:8081'
                     echo "Response: ${response.content}"
                 }
             }
