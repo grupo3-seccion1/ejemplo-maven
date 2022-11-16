@@ -19,76 +19,76 @@ pipeline {
                 }
             }
         }
-        // stage('Build'){
-        //     steps{
-        //         echo 'Building...'
-        //         slackSend color: "warning", message: "Building..."
-        //         sh './mvnw clean compile -e'
+        stage('Build'){
+            steps{
+                echo 'Building...'
+                slackSend color: "warning", message: "Building..."
+                sh './mvnw clean compile -e'
 
-        //     }
-        //     post {
-        //         success {
-        //             echo 'Build Success'
-        //             slackSend color: "good", message: "Build Success"
-        //         }
-        //         failure {
-        //             echo 'Build Failed'
-        //             slackSend color: "danger", message: "Build Failed"
-        //         }
-        //     }
-        // }
-        // stage('Test'){
-        //     steps{
-        //         echo 'Testing...'
-        //         slackSend color: "warning", message: "Testing..."
-        //         sh './mvnw test -e'
-        //     }
-        //     post {
-        //         success {
-        //             echo 'Test Success'
-        //             slackSend color: "good", message: "Test Success"
-        //         }
-        //         failure {
-        //             echo 'Test Failed'
-        //             slackSend color: "danger", message: "Test Failed"
-        //         }
-        //     }
-        // }
-        // stage('Package'){
-        //     steps{
-        //         echo 'Packaging...'
-        //         slackSend color: "warning", message: "Packaging..."
-        //         sh './mvnw package -e'
-        //     }
-        //     post {
-        //         success {
-        //             echo 'Package Success'
-        //             slackSend color: "good", message: "Package Success"
-        //         }
-        //         failure {
-        //             echo 'Package Failed'
-        //             slackSend color: "danger", message: "Package Failed"
-        //         }
-        //     }
-        // }
-        // stage('Sonar'){
-        //     steps{
-        //         echo 'Sonar...'
-        //         withSonarQubeEnv('sonar-public') { // If you have configured more than one global server connection, you can specify its name
-        //             sh './mvnw clean package sonar:sonar'
-        //         }
-        //     }
-        //     post {
-        //         success {
-        //             echo 'SONAR Success'
-        //             slackSend color: "good", message: "Sonar Success. Branch: ${GIT_BRANCH}"
-        //         }
-        //         failure {
-        //             echo 'SONAR Failed'
-        //             slackSend color: "danger", message: "Sonar Failed."
-        //         }
-        //     }
-        // }
+            }
+            post {
+                success {
+                    echo 'Build Success'
+                    slackSend color: "good", message: "Build Success"
+                }
+                failure {
+                    echo 'Build Failed'
+                    slackSend color: "danger", message: "Build Failed"
+                }
+            }
+        }
+        stage('Test'){
+            steps{
+                echo 'Testing...'
+                slackSend color: "warning", message: "Testing..."
+                sh './mvnw test -e'
+            }
+            post {
+                success {
+                    echo 'Test Success'
+                    slackSend color: "good", message: "Test Success"
+                }
+                failure {
+                    echo 'Test Failed'
+                    slackSend color: "danger", message: "Test Failed"
+                }
+            }
+        }
+        stage('Package'){
+            steps{
+                echo 'Packaging...'
+                slackSend color: "warning", message: "Packaging..."
+                sh './mvnw package -e'
+            }
+            post {
+                success {
+                    echo 'Package Success'
+                    slackSend color: "good", message: "Package Success"
+                }
+                failure {
+                    echo 'Package Failed'
+                    slackSend color: "danger", message: "Package Failed"
+                }
+            }
+        }
+        stage('Sonar'){
+            steps{
+                echo 'Sonar...'
+                withSonarQubeEnv('sonar-public') { // If you have configured more than one global server connection, you can specify its name
+                    sh './mvnw clean package sonar:sonar'
+                }
+            }
+            post {
+                success {
+                    echo 'SONAR Success'
+                    slackSend color: "good", message: "Sonar Success. Branch: ${GIT_BRANCH}"
+                }
+                failure {
+                    echo 'SONAR Failed'
+                    slackSend color: "danger", message: "Sonar Failed."
+                }
+            }
+        }
         stage('uploadNexus'){
             steps{
                 echo 'Uploading to Nexus...'
@@ -98,7 +98,6 @@ pipeline {
                 // nexusPublisher nexusInstanceId: 'nexus01', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: './build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'fancyWidget', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
                 // nexusPublisher nexusInstanceId: 'nexus01', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: '${WORKSPACE}/build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'fancyWidget', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
                 // nexusPublisher nexusInstanceId: 'nexus', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: '${WORKSPACE}/build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'fancyWidget', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
-                
                 //, tagName: 'build-125'
 
             }
@@ -150,6 +149,26 @@ pipeline {
                 }
             }
         }
+        stage('CURL Localhost:8081'){
+            steps{
+                echo 'CURL...'
+                slackSend color: "warning", message: "CURL..."
+                script {
+                    def response = sh 'curl http://localhost:8081/rest/mscovid/test?msg=testing'
+                    echo "Response: ${response}"
+                }
+            }
+            post {
+                success {
+                    echo 'CURL Success'
+                    slackSend color: "good", message: "CURL Success, Response: ${response}"
+                }
+                failure {
+                    echo 'CURL Failed'
+                    slackSend color: "danger", message: "CURL Failed"
+                }
+            }
+        }
         // stage('Stop Jar'){
         //     steps{
         //         echo 'Stopping Jar...'
@@ -167,27 +186,6 @@ pipeline {
         //         }
         //     }
         // }
-        stage('CURL Localhost:8081'){
-            steps{
-                echo 'CURL...'
-                slackSend color: "warning", message: "CURL..."
-                script {
-                    def response = sh 'curl http://localhost:8081/rest/mscovid/test?msg=testing'
-                    echo "Response: ${response}"
-                }
-            }
-            post {
-                success {
-                    echo 'CURL Success'
-                    slackSend color: "good", message: "CURL Success"
-                }
-                failure {
-                    echo 'CURL Failed'
-                    slackSend color: "danger", message: "CURL Failed"
-                }
-            }
-        }
-
         
         // stage('Run'){
         //     steps{
