@@ -10,7 +10,7 @@ node {
             echo "Building"
             sh './mvnw clean compile -e'
         }
-        slackSend color: "good", message: "Build Success.
+        slackSend color: "good", message: "Build Success"
     } catch (e) {
         slackSend color: "danger", message: "Build Failure. Error : " + e 
         throw e
