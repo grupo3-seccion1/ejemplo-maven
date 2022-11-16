@@ -81,8 +81,8 @@ node {
     try {
         stage('Test Artefact'){
             echo 'Test Artefact...'
-            def response = httpRequest 'http://localhost:8081/rest/mscovid/test?msg=testing'
-            echo response.status
+            sh "$(curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8081/rest/mscovid/test?msg=testing)"
+            // echo response.status
             // sh 'curl -X GET http://localhost:8081/rest/mscovid/test?msg=testing'
         }
     } catch (e) {
