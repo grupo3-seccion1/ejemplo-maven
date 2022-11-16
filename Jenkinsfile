@@ -81,9 +81,14 @@ node {
     try {
         stage('Test Artefact'){
             echo 'Test Artefact...'
-            sh "$(curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8081/rest/mscovid/test?msg=testing)"
+            // $(curl -s -o /dev/null -w %{http_code}\n 'http://localhost:8081/rest/mscovid/test?msg=testing')
             // echo response.status
-            // sh 'curl -X GET http://localhost:8081/rest/mscovid/test?msg=testing'
+            sh 'curl -I GET http://localhost:8081/rest/mscovid/test?msg=testing' > response.txt
+            sh 'cat response.txt'
+            sh 'grep -q "200" response.txt'
+
+
+
         }
     } catch (e) {
         slackSend color: "danger", message: "Test Artefact Failure. Error : " + e 
