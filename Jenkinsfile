@@ -89,31 +89,31 @@ pipeline {
         //         }
         //     }
         // }
-        // stage('uploadNexus'){
-        //     steps{
-        //         echo 'Uploading to Nexus...'
-        //         slackSend color: "warning", message: "Uploading to Nexus..."
-        //         sh './mvnw clean install -e'
-        //         nexusPublisher nexusInstanceId: 'nexus01', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: './build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
-        //         // nexusPublisher nexusInstanceId: 'nexus01', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: './build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'fancyWidget', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
-        //         // nexusPublisher nexusInstanceId: 'nexus01', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: '${WORKSPACE}/build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'fancyWidget', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
-        //         // nexusPublisher nexusInstanceId: 'nexus', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: '${WORKSPACE}/build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'fancyWidget', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
+        stage('uploadNexus'){
+            steps{
+                echo 'Uploading to Nexus...'
+                slackSend color: "warning", message: "Uploading to Nexus..."
+                sh './mvnw clean install -e'
+                nexusPublisher nexusInstanceId: 'nexus01', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: './build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
+                // nexusPublisher nexusInstanceId: 'nexus01', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: './build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'fancyWidget', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
+                // nexusPublisher nexusInstanceId: 'nexus01', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: '${WORKSPACE}/build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'fancyWidget', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
+                // nexusPublisher nexusInstanceId: 'nexus', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: '${WORKSPACE}/build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'fancyWidget', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
                 
-        //         //, tagName: 'build-125'
+                //, tagName: 'build-125'
 
-        //     }
-        //     post {
-        //         success {
-        //             echo 'Upload Success'
-        //             slackSend color: "good", message: "Upload Success"
-        //         }
-        //         failure {
-        //             echo 'Upload Failed'
-        //             slackSend color: "danger", message: "Upload Failed"
-        //         }
-        //     }
+            }
+            post {
+                success {
+                    echo 'Upload Success'
+                    slackSend color: "good", message: "Upload Success"
+                }
+                failure {
+                    echo 'Upload Failed'
+                    slackSend color: "danger", message: "Upload Failed"
+                }
+            }
 
-        // }
+        }
         stage('downloadNexusArtefact'){
             steps{
                 cleanWs()    
