@@ -152,7 +152,7 @@ pipeline {
         }
         stage('CURL Localhost:8081'){
             steps{
-                Sleep 5
+                sh 'sleep 10'
                 echo 'CURL...'
                 slackSend color: "warning", message: "CURL..."
                 sh 'curl -I http://localhost:8081/rest/mscovid/test?msg=testing > reponse'
