@@ -150,6 +150,23 @@ pipeline {
                 }
             }
         }
+        stage('Stop Jar'){
+            steps{
+                echo 'Stopping Jar...'
+                slackSend color: "warning", message: "Stopping Jar..."
+                sh 'killall java'
+            }
+            post {
+                success {
+                    echo 'Stop Success'
+                    slackSend color: "good", message: "Stop Success"
+                }
+                failure {
+                    echo 'Stop Failed'
+                    slackSend color: "danger", message: "Stop Failed"
+                }
+            }
+        }
         stage('CURL Localhost:8081'){
             steps{
                 echo 'CURL...'
