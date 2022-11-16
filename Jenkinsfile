@@ -119,7 +119,7 @@ pipeline {
                 cleanWs()    
                 echo 'Download...'
                 slackSend color: "warning", message: "Download..."
-                sh 'curl -X GET -u admin:admin https://nexus.danilovidalm.com/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar -O'
+                sh 'curl -X GET -u admin:1qazxsw2 https://nexus.danilovidalm.com/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar -O'
                 // sh 'curl -X GET -u admin:admin https://nexus.danilovidalm.com/repository/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar -O'
             }
             post {
