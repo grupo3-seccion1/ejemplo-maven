@@ -47,5 +47,15 @@ node {
         slackSend color: "danger", message: "Sonar Failure. commit"
         throw e
     } finally { }
-    
+    try {
+        stage('Upload Nexus'){
+            echo 'Upload Nexus...'
+            sh './mvnw clean install -e'
+            nexusPublisher nexusInstanceId: 'nexus01', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: './build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
+        }
+        slackSend color: "good", message: "Upload Nexus Success. commit"
+    }catch (e) {
+        slackSend color: "danger", message: "Upload Nexus Failure. commit"
+        throw e
+    } finally { }
 }
