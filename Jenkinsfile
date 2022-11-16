@@ -1,5 +1,5 @@
+def estadoStage = 'SI'
 node {
-    def siguiente = false;
     stage('INFO'){
         echo "Hello World"
         slackSend color: "warning", message: "INFO: Prueba Taller 3 - Modulo 4 Branch: " + env.BRANCH_NAME
@@ -13,6 +13,6 @@ node {
         }else{
             slackSend color: "good", message: "Build Success. commit"
         }
-        echo siguiente
+        echo 'Variable : ' + estadoStage
     }
 }
