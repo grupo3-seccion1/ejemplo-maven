@@ -82,18 +82,26 @@ node {
     try {
         stage('Test Artefact'){
             echo 'Test Artefact...'
-            // $(curl -s -o /dev/null -w %{http_code}\n 'http://localhost:8081/rest/mscovid/test?msg=testing')
-            // echo response.status
             sh 'curl -I GET http://localhost:8081/rest/mscovid/test?msg=testing > response.txt'
-            sh 'cat response.txt'
             responseStatus = sh(script: 'cat response.txt | grep HTTP/1.1 | cut -d " " -f2', returnStdout: true).trim()
-            echo responseStatus
-
-
-
         }
     } catch (e) {
         slackSend color: "danger", message: "Test Artefact Failure. Error : " + e 
         throw e
     } finally { }
+    if(responseStatus == '200'){
+        try {
+            stage('Upload jar to Nexus'){
+                echo 'Upload jar to Nexus...'
+                nexusPublisher nexusInstanceId: 'nexus01', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: './DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '1.0.0']]]
+            }
+            slackSend color: "good", message: "Upload jar to Nexus Success. commit"
+        }catch (e) {
+            slackSend color: "danger", message: "Upload jar to Nexus Failure. Error : " + e 
+            throw e
+        } finally { }
+    } else {
+        slackSend color: "danger", message: "Status Response : " + responseStatus
+        throw e
+    }
 }
