@@ -1,6 +1,8 @@
 
 node {
-    def GIT_COMMIT_HASH = sh "(git log -n 1 --pretty=format:'%H')"
+    def gitVars = git branch: "$RELEASE_BRANCH", url: "$SOURCE_CODE_URL"
+    // gitVars will contain the following keys: GIT_BRANCH, GIT_COMMIT, GIT_LOCAL_BRANCH, GIT_PREVIOUS_COMMIT, GIT_PREVIOUS_SUCCESSFUL_COMMIT, GIT_URL
+    println gitVars
     stage('INFO'){
         // echo env
         slackSend color: "warning", message: "INFO: Prueba Taller 3 - Modulo 4 Branch: " + env.BRANCH_NAME
