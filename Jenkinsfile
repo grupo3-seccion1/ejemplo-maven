@@ -10,7 +10,7 @@ node {
             echo "Building"
             sh './mvnw clean compile -e'
         }
-        slackSend color: "good", message: "Build Success. Commit : " + env.GIT_REVISION
+        slackSend color: "good", message: "Build Success.
     } catch (e) {
         slackSend color: "danger", message: "Build Failure. Error : " + e 
         throw e
@@ -20,7 +20,7 @@ node {
             echo "Testing"
             sh './mvnw test -e'
         }
-        slackSend color: "good", message: "Test Success. commit"
+        slackSend color: "good", message: "Test Success"
     } catch (e) {
         slackSend color: "danger", message: "Test Failure. Error : " + e 
         throw e
@@ -30,7 +30,7 @@ node {
             echo "Packaging"
             sh './mvnw package -e'
         }
-        slackSend color: "good", message: "Packaging Success. commit"
+        slackSend color: "good", message: "Packaging Success"
     } catch (e) {
         slackSend color: "danger", message: "Packaging Failure. Error : " + e 
         throw e
@@ -42,7 +42,7 @@ node {
                 sh './mvnw clean package sonar:sonar'
             }
         }
-        slackSend color: "good", message: "Sonar Success. commit"
+        slackSend color: "good", message: "Sonar Success"
     }catch (e) {
         slackSend color: "danger", message: "Sonar Failure. Error : " + e 
         throw e
@@ -53,7 +53,7 @@ node {
             sh './mvnw clean install -e'
             nexusPublisher nexusInstanceId: 'nexus01', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: './build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
         }
-        slackSend color: "good", message: "Upload Nexus Success. commit"
+        slackSend color: "good", message: "Upload Nexus Success"
     }catch (e) {
         slackSend color: "danger", message: "Upload Nexus Failure. Error : " + e 
         throw e
@@ -63,7 +63,7 @@ node {
             echo 'Download Nexus Artefact...'
             sh 'curl -X GET -u admin:1qazxsw2 https://nexus.danilovidalm.com/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar -O'
         }
-        slackSend color: "good", message: "Download Nexus Artefact Success. commit"
+        slackSend color: "good", message: "Download Nexus Artefact Success"
     }catch (e) {
         slackSend color: "danger", message: "Download Nexus Artefact Failure. Error : " + e 
         throw e
@@ -73,7 +73,7 @@ node {
             echo 'Run Nexus Artefact...'
             sh 'nohup java -jar ./DevOpsUsach2020-0.0.1.jar &'
         }
-        slackSend color: "good", message: "Run Nexus Artefact Success. commit"
+        slackSend color: "good", message: "Run Nexus Artefact Success"
     }catch (e) {
         slackSend color: "danger", message: "Run Nexus Artefact Failure. Error : " + e 
         throw e
@@ -95,7 +95,7 @@ node {
                 echo 'Upload jar to Nexus...'
                 nexusPublisher nexusInstanceId: 'nexus01', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: './DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '1.0.0']]]
             }
-            slackSend color: "good", message: "Upload jar to Nexus Success. commit"
+            slackSend color: "good", message: "Upload jar to Nexus Success"
         }catch (e) {
             slackSend color: "danger", message: "Upload jar to Nexus Failure. Error : " + e 
             throw e
