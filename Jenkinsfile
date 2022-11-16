@@ -89,6 +89,21 @@ pipeline {
                 }
             }
         }
+        stage ('Creating tag Nexus') {
+            steps{
+                createTag nexusInstanceId: 'nexus01', tagAttributesJson: '{"createdBy" : "Grupo 3"}', tagName: '0.0.1'
+            }
+            post {
+                success {
+                    echo 'Tag Success'
+                    slackSend color: "good", message: "Tag Success. Branch: ${GIT_BRANCH}"
+                }
+                failure {
+                    echo 'Tag Failed'
+                    slackSend color: "danger", message: "Tag Failed."
+                }
+            }
+        }
         stage('uploadNexus'){
             steps{
                 echo 'Uploading to Nexus...'
