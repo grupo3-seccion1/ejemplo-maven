@@ -1,4 +1,5 @@
 node {
+    def siguiente = false;
     stage('INFO'){
         echo "Hello World"
         slackSend color: "warning", message: "INFO: Prueba Taller 3 - Modulo 4 Branch: " + env.BRANCH_NAME
@@ -9,6 +10,9 @@ node {
         sh './mvnw clean compile -e'
         if(currentBuild.result == 'FAILURE'){
             slackSend color: "danger", message: "Build Failure. commit"
+        }else{
+            slackSend color: "good", message: "Build Success. commit"
         }
+        echo siguiente
     }
 }
