@@ -1,8 +1,5 @@
 
 node {
-    def gitVars = git branch: env.RELEASE_BRANCH, url: env.SOURCE_CODE_URL
-    // gitVars will contain the following keys: GIT_BRANCH, GIT_COMMIT, GIT_LOCAL_BRANCH, GIT_PREVIOUS_COMMIT, GIT_PREVIOUS_SUCCESSFUL_COMMIT, GIT_URL
-    println gitVars
     stage('INFO'){
         // echo env
         slackSend color: "warning", message: "INFO: Prueba Taller 3 - Modulo 4 Branch: " + env.BRANCH_NAME
@@ -13,7 +10,7 @@ node {
             echo "Building"
             sh './mvnw clean compile -e'
         }
-        slackSend color: "good", message: "Build Success. Commit : " + GIT_COMMIT_HASH
+        slackSend color: "good", message: "Build Success. Commit : " + env.GIT_REVISION
     } catch (e) {
         slackSend color: "danger", message: "Build Failure. Error : " + e 
         throw e
