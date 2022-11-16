@@ -169,6 +169,29 @@ pipeline {
                 }
             }
         }
+        //updaload nexus jar
+        stage('Upload jar to nexus')
+        {
+            steps{
+                echo 'Uploading to Nexus...'
+                slackSend color: "warning", message: "Uploading to Nexus..."
+                sh 'cp ./DevOpsUsach2020-0.0.1.jar DevOpsUsach2020-1.0.0.jar'
+                nexusPublisher nexusInstanceId: 'nexus01', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: './DevOpsUsach2020-1.0.0.jar']], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '1.0.0']]]
+            }
+            post {
+                success {
+                    echo 'Upload Success'
+                    slackSend color: "good", message: "Upload Success"
+                }
+                failure {
+                    echo 'Upload Failed'
+                    slackSend color: "danger", message: "Upload Failed"
+                }
+            }
+        }
+        //download jar
+        //run jar
+        //curl localhost:8081
         // stage('Stop Jar'){
         //     steps{
         //         echo 'Stopping Jar...'
