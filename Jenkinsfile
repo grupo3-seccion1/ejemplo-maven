@@ -1,4 +1,5 @@
-// def estadoStage = 'SI'
+def GIT_COMMIT_HASH = sh "(git log -n 1 --pretty=format:'%H')"
+
 node {
     stage('INFO'){
         // echo env
@@ -10,7 +11,7 @@ node {
             echo "Building"
             sh './mvnw clean compile -e'
         }
-        slackSend color: "good", message: "Build Success. Commit : " + env.GIT_COMMIT
+        slackSend color: "good", message: "Build Success. Commit : " + env.GIT_COMMIT_HASH
     } catch (e) {
         slackSend color: "danger", message: "Build Failure. Error : " + e 
         throw e
