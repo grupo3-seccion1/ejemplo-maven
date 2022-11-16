@@ -89,21 +89,6 @@ pipeline {
                 }
             }
         }
-        stage ('Creating tag Nexus') {
-            steps{
-                createTag nexusInstanceId: 'nexus01', tagAttributesJson: '{"createdBy" : "Grupo 3"}', tagName: '0.0.1'
-            }
-            post {
-                success {
-                    echo 'Tag Success'
-                    slackSend color: "good", message: "Tag Success. Branch: ${GIT_BRANCH}"
-                }
-                failure {
-                    echo 'Tag Failed'
-                    slackSend color: "danger", message: "Tag Failed."
-                }
-            }
-        }
         stage('uploadNexus'){
             steps{
                 echo 'Uploading to Nexus...'
@@ -129,24 +114,25 @@ pipeline {
             }
 
         }
-        // stage('downloadNexusArtefact'){
-        //     steps{
-        //         cleanWs()    
-        //         echo 'Download...'
-        //         slackSend color: "warning", message: "Download..."
-        //         sh 'curl -X GET -u admin:admin https://nexus.danilovidalm.com/repository/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar -O'
-        //     }
-        //     post {
-        //         success {
-        //             echo 'Deploy Success'
-        //             slackSend color: "good", message: "Deploy Success"
-        //         }
-        //         failure {
-        //             echo 'Deploy Failed'
-        //             slackSend color: "danger", message: "Deploy Failed"
-        //         }
-        //     }
-        // }
+        stage('downloadNexusArtefact'){
+            steps{
+                cleanWs()    
+                echo 'Download...'
+                slackSend color: "warning", message: "Download..."
+                sh 'curl -X GET -u admin:admin https://nexus.danilovidalm.com/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar -O'
+                // sh 'curl -X GET -u admin:admin https://nexus.danilovidalm.com/repository/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar -O'
+            }
+            post {
+                success {
+                    echo 'Deploy Success'
+                    slackSend color: "good", message: "Deploy Success"
+                }
+                failure {
+                    echo 'Deploy Failed'
+                    slackSend color: "danger", message: "Deploy Failed"
+                }
+            }
+        }
 
         
         // stage('Run'){
