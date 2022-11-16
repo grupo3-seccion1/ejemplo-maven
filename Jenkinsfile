@@ -151,6 +151,7 @@ pipeline {
         }
         stage('CURL Localhost:8081'){
             steps{
+                sh 'sleep 5'
                 echo 'CURL...'
                 slackSend color: "warning", message: "CURL..."
                 script {
