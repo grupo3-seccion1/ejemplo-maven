@@ -152,26 +152,33 @@ pipeline {
         }
         stage('CURL Localhost:8081'){
             steps{
-                sh 'sleep 5'
+                Sleep 5
                 echo 'CURL...'
                 slackSend color: "warning", message: "CURL..."
-                // sh 'curl-I http://localhost:8081/rest/mscovid/test?msg=testing > reponse.txt'
-                
-                script {
-                    env.ENV_HTML = sh 'curl -I http://localhost:8081/rest/mscovid123/test?msg=testing > reponse.txt'
-                }
-                echo env.ENV_HTML
-            }
-            post {
-                success {
-                    echo 'CURL Success'
-                    slackSend color: "good", message: "CURL Success"
-                }
-                failure {
-                    echo 'CURL Failed'
-                    slackSend color: "danger", message: "CURL Failed"
+                sh 'curl -I http://localhost:8081/rest/mscovid123/test?msg=testing > reponse.txt'
+                sh 'cat reponse.txt'
+                scritp {
+                    if(reponse.txt.contains("200")){
+                        echo 'CURL Success'
+                        slackSend color: "good", message: "CURL Success status 200"
+                    }else{
+                        echo 'CURL Failed'
+                        slackSend color: "danger", message: "CURL Failed"
+                        // currentBuild.result = 'FAILURE'
+                        currentBuild.result = 'FAILURE'
+                    }
                 }
             }
+            // post {
+            //     success {
+            //         echo 'CURL Success'
+            //         slackSend color: "good", message: "CURL Success"
+            //     }
+            //     failure {
+            //         echo 'CURL Failed'
+            //         slackSend color: "danger", message: "CURL Failed"
+            //     }
+            // }
         }
         //updaload nexus jar
         stage('Upload jar to nexus')
