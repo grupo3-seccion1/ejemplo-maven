@@ -158,7 +158,7 @@ pipeline {
                 // sh 'curl-I http://localhost:8081/rest/mscovid/test?msg=testing > reponse.txt'
                 
                 script {
-                    env.ENV_HTML = sh 'curl -I http://localhost:8081/rest/mscovid/test?msg=testing'
+                    env.ENV_HTML = sh 'curl -I http://localhost:8081/rest/mscovid/test?msg=testing > reponse.txt'
                 }
                 echo env.ENV_HTML
             }
