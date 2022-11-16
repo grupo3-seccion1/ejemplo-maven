@@ -158,7 +158,7 @@ pipeline {
                 // sh 'curl-I http://localhost:8081/rest/mscovid/test?msg=testing > reponse.txt'
                 
                 script {
-                    env.ENV_HTML = sh 'curl -I http://localhost:8081/rest/mscovid/test?msg=testing > reponse.txt'
+                    env.ENV_HTML = sh 'curl -I http://localhost:8081/rest/mscovid123/test?msg=testing > reponse.txt'
                 }
                 echo env.ENV_HTML
             }
@@ -210,25 +210,6 @@ pipeline {
         //         failure {
         //             echo 'Stop Failed'
         //             slackSend color: "danger", message: "Stop Failed"
-        //         }
-        //     }
-        // }
-        
-        // stage('Run'){
-        //     steps{
-        //         echo 'Running...'
-        //         slackSend color: "warning", message: "Running..."
-        //         sh '#./mvnw spring-boot:run -e'
-        //     }
-        //     post {
-        //         success {
-        //             echo 'Run Success'
-        //             slackSend color: "good", message: "Run Success"   
-        //             // cleanWs()                 
-        //         }
-        //         failure {
-        //             echo 'Run Failed'
-        //             slackSend color: "danger", message: "Run Failed"
         //         }
         //     }
         // }
