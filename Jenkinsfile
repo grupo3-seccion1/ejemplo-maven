@@ -83,7 +83,7 @@ node {
             echo 'Test Artefact...'
             // $(curl -s -o /dev/null -w %{http_code}\n 'http://localhost:8081/rest/mscovid/test?msg=testing')
             // echo response.status
-            sh 'curl -I GET http://localhost:8081/rest/mscovid/test?msg=testing' > response.txt
+            sh 'curl -I GET http://localhost:8081/rest/mscovid/test?msg=testing > response.txt'
             sh 'cat response.txt'
             sh 'grep -q "200" response.txt'
 
