@@ -1,4 +1,4 @@
-def estadoStage = 'SI'
+// def estadoStage = 'SI'
 node {
     stage('INFO'){
         echo "Hello World"
@@ -6,13 +6,20 @@ node {
         slackSend color: "good", message: "Info Success. hash commit : " + env.COMMIT
     }
     stage('Build'){
-        echo "Building"
-        sh './mvnw clean compile -e'
-        if(currentBuild.result == 'FAILURE'){
+        try {
+            echo "Building"
+            sh './mvnw clean compile -e'
+        } catch (e) {
+            currentBuild.result = 'FAILURE'
             slackSend color: "danger", message: "Build Failure. commit"
-        }else{
-            slackSend color: "good", message: "Build Success. commit"
+            // estadoStage = 'NO'
+        } finally {
+            echo currentBuild.result
         }
-        echo 'Variable : ' + estadoStage
+        //     slackSend color: "good", message: "Build Success. commit"
+        // if(currentBuild.result == 'FAILURE'){
+        // }else{
+        // }
+        // echo 'Variable : ' + estadoStage
     }
 }
