@@ -150,12 +150,13 @@ pipeline {
             }
         }
         stage('CURL Localhost:8081'){
+            def response = ''
             steps{
                 sh 'sleep 5'
                 echo 'CURL...'
                 slackSend color: "warning", message: "CURL..."
                 script {
-                    def response = sh 'curl http://localhost:8081/rest/mscovid/test?msg=testing'
+                    response = sh 'curl http://localhost:8081/rest/mscovid/test?msg=testing'
                     echo "Response: ${response}"
                 }
             }
