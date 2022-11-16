@@ -124,11 +124,11 @@ pipeline {
             }
             post {
                 success {
-                    echo 'Deploy Success'
+                    echo 'Download Success'
                     slackSend color: "good", message: "Deploy Success"
                 }
                 failure {
-                    echo 'Deploy Failed'
+                    echo 'Download Failed'
                     slackSend color: "danger", message: "Deploy Failed"
                 }
             }
