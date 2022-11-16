@@ -1,12 +1,13 @@
 pipeline {
     agent any
+    environment {
+        ENV_HTML = "."
+    }
     stages {
         stage('INFO'){
             steps{
                 echo 'Info...'
                 slackSend color: "warning", message: "INFO: Prueba Taller 3 - Modulo 4 Branch: ${GIT_BRANCH}"
-                //sh './mvnw clean compile -e'
-
             }
             post {
                 success {
@@ -155,8 +156,9 @@ pipeline {
                 echo 'CURL...'
                 slackSend color: "warning", message: "CURL..."
                 script {
-                    sh 'curl http://localhost:8081/rest/mscovid/test?msg=testing'
+                    ENV_HTML = sh 'curl http://localhost:8081/rest/mscovid/test?msg=testing'
                 }
+                echo env.ENV_HTML
             }
             post {
                 success {
@@ -175,8 +177,8 @@ pipeline {
             steps{
                 echo 'Uploading to Nexus...'
                 slackSend color: "warning", message: "Uploading to Nexus..."
-                sh 'cp ./DevOpsUsach2020-0.0.1.jar DevOpsUsach2020-1.0.0.jar'
-                nexusPublisher nexusInstanceId: 'nexus01', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: './DevOpsUsach2020-1.0.0.jar']], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '1.0.0']]]
+                // sh 'cp ./DevOpsUsach2020-0.0.1.jar DevOpsUsach2020-1.0.0.jar'
+                nexusPublisher nexusInstanceId: 'nexus01', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: './DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '1.0.0']]]
             }
             post {
                 success {
