@@ -82,7 +82,7 @@ node {
     try {
         stage('Test Artefact'){
             echo 'Test Artefact...'
-            sh 'curl -I GET http://localhost:8081/rest/mscovid/test?msg=testing > response.txt'
+            sh 'curl -I GET http://localhost:8081/rest/mscovid1234/test?msg=testing > response.txt'
             responseStatus = sh(script: 'cat response.txt | grep HTTP/1.1 | cut -d " " -f2', returnStdout: true).trim()
         }
     } catch (e) {
