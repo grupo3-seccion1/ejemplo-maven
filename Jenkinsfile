@@ -1,6 +1,6 @@
-def GIT_COMMIT_HASH = sh "(git log -n 1 --pretty=format:'%H')"
 
 node {
+    def GIT_COMMIT_HASH = sh "(git log -n 1 --pretty=format:'%H')"
     stage('INFO'){
         // echo env
         slackSend color: "warning", message: "INFO: Prueba Taller 3 - Modulo 4 Branch: " + env.BRANCH_NAME
