@@ -150,6 +150,26 @@ pipeline {
                 }
             }
         }
+        stage('CURL Localhost:8081'){
+            steps{
+                echo 'CURL...'
+                slackSend color: "warning", message: "CURL..."
+                script {
+                    def response = httpRequest url: 'http://localhost:8081'
+                    echo "Response: ${response.content}"
+                }
+            }
+            post {
+                success {
+                    echo 'CURL Success'
+                    slackSend color: "good", message: "CURL Success"
+                }
+                failure {
+                    echo 'CURL Failed'
+                    slackSend color: "danger", message: "CURL Failed"
+                }
+            }
+        }
 
         
         // stage('Run'){
