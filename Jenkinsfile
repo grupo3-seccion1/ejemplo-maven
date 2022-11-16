@@ -1,7 +1,7 @@
 // def estadoStage = 'SI'
 node {
     stage('INFO'){
-        echo "Hello World"
+        echo env
         slackSend color: "warning", message: "INFO: Prueba Taller 3 - Modulo 4 Branch: " + env.BRANCH_NAME
         // slackSend color: "good", message: "Info Success. hash commit : " + e
     }
@@ -12,7 +12,7 @@ node {
         }
         slackSend color: "good", message: "Build Success. commit"
     } catch (e) {
-        slackSend color: "danger", message: "Build Failure. commit"
+        slackSend color: "danger", message: "Build Failure. Error : " + e 
         throw e
     } finally {}
     try {
@@ -22,7 +22,7 @@ node {
         }
         slackSend color: "good", message: "Test Success. commit"
     } catch (e) {
-        slackSend color: "danger", message: "Test Failure. commit"
+        slackSend color: "danger", message: "Test Failure. Error : " + e 
         throw e
     } finally {}
     try {
@@ -32,7 +32,7 @@ node {
         }
         slackSend color: "good", message: "Packaging Success. commit"
     } catch (e) {
-        slackSend color: "danger", message: "Packaging Failure. commit"
+        slackSend color: "danger", message: "Packaging Failure. Error : " + e 
         throw e
     } finally { }
     try {
@@ -44,7 +44,7 @@ node {
         }
         slackSend color: "good", message: "Sonar Success. commit"
     }catch (e) {
-        slackSend color: "danger", message: "Sonar Failure. commit"
+        slackSend color: "danger", message: "Sonar Failure. Error : " + e 
         throw e
     } finally { }
     try {
@@ -55,7 +55,7 @@ node {
         }
         slackSend color: "good", message: "Upload Nexus Success. commit"
     }catch (e) {
-        slackSend color: "danger", message: "Upload Nexus Failure. commit"
+        slackSend color: "danger", message: "Upload Nexus Failure. Error : " + e 
         throw e
     } finally { }
 }
