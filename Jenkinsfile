@@ -173,7 +173,7 @@ pipeline {
                 slackSend color: "warning", message: "CURL..."
                 script {
                     def response = sh 'curl http://localhost:8081/rest/mscovid/test?msg=testing'
-                    echo "Response: ${response.content}"
+                    echo "Response: ${response}"
                 }
             }
             post {
