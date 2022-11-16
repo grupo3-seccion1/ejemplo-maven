@@ -78,6 +78,7 @@ node {
         slackSend color: "danger", message: "Run Nexus Artefact Failure. Error : " + e 
         throw e
     } finally { }
+    def responseStatus = ''
     try {
         stage('Test Artefact'){
             echo 'Test Artefact...'
@@ -85,7 +86,8 @@ node {
             // echo response.status
             sh 'curl -I GET http://localhost:8081/rest/mscovid/test?msg=testing > response.txt'
             sh 'cat response.txt'
-            sh 'grep -q "200" response.txt'
+            responseStatus = sh(script: 'cat response.txt | grep HTTP/1.1 | cut -d " " -f2', returnStdout: true).trim()
+            echo responseStatus
 
 
 
