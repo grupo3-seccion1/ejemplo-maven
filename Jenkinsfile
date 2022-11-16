@@ -85,5 +85,8 @@ node {
             echo response.status
             // sh 'curl -X GET http://localhost:8081/rest/mscovid/test?msg=testing'
         }
-    }
+    } catch (e) {
+        slackSend color: "danger", message: "Test Artefact Failure. Error : " + e 
+        throw e
+    } finally { }
 }
