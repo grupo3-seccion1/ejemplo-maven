@@ -10,7 +10,7 @@ node {
             echo "Building"
             sh './mvnw clean compile -e'
         }
-        slackSend color: "good", message: "Build Success. commit"
+        slackSend color: "good", message: "Build Success. Commit : " + env.GIT_COMMIT
     } catch (e) {
         slackSend color: "danger", message: "Build Failure. Error : " + e 
         throw e
@@ -82,7 +82,7 @@ node {
     try {
         stage('Test Artefact'){
             echo 'Test Artefact...'
-            sh 'curl -I GET http://localhost:8081/rest/mscovid1234/test?msg=testing > response.txt'
+            sh 'curl -I GET http://localhost:8081/rest/mscovid/test?msg=testing > response.txt'
             responseStatus = sh(script: 'cat response.txt | grep HTTP/1.1 | cut -d " " -f2', returnStdout: true).trim()
         }
     } catch (e) {
