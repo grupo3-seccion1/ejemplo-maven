@@ -155,8 +155,10 @@ pipeline {
                 sh 'sleep 5'
                 echo 'CURL...'
                 slackSend color: "warning", message: "CURL..."
+                // sh 'curl-I http://localhost:8081/rest/mscovid/test?msg=testing > reponse.txt'
+                
                 script {
-                    ENV_HTML = sh 'curl http://localhost:8081/rest/mscovid/test?msg=testing'
+                    env.ENV_HTML = sh 'curl -I http://localhost:8081/rest/mscovid/test?msg=testing'
                 }
                 echo env.ENV_HTML
             }
