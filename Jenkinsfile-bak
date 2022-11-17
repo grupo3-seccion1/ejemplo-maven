@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    environment {
-        ENV_HTML = "."
-    }
     stages {
         stage('INFO'){
             steps{
@@ -20,119 +17,119 @@ pipeline {
                 }
             }
         }
-        // stage('Build'){
-        //     steps{
-        //         echo 'Building...'
-        //         slackSend color: "warning", message: "Building..."
-        //         sh './mvnw clean compile -e'
+        stage('Build'){
+            steps{
+                echo 'Building...'
+                slackSend color: "warning", message: "Building..."
+                sh './mvnw clean compile -e'
 
-        //     }
-        //     post {
-        //         success {
-        //             echo 'Build Success'
-        //             slackSend color: "good", message: "Build Success"
-        //         }
-        //         failure {
-        //             echo 'Build Failed'
-        //             slackSend color: "danger", message: "Build Failed"
-        //         }
-        //     }
-        // }
-        // stage('Test'){
-        //     steps{
-        //         echo 'Testing...'
-        //         slackSend color: "warning", message: "Testing..."
-        //         sh './mvnw test -e'
-        //     }
-        //     post {
-        //         success {
-        //             echo 'Test Success'
-        //             slackSend color: "good", message: "Test Success"
-        //         }
-        //         failure {
-        //             echo 'Test Failed'
-        //             slackSend color: "danger", message: "Test Failed"
-        //         }
-        //     }
-        // }
-        // stage('Package'){
-        //     steps{
-        //         echo 'Packaging...'
-        //         slackSend color: "warning", message: "Packaging..."
-        //         sh './mvnw package -e'
-        //     }
-        //     post {
-        //         success {
-        //             echo 'Package Success'
-        //             slackSend color: "good", message: "Package Success"
-        //         }
-        //         failure {
-        //             echo 'Package Failed'
-        //             slackSend color: "danger", message: "Package Failed"
-        //         }
-        //     }
-        // }
-        // stage('Sonar'){
-        //     steps{
-        //         echo 'Sonar...'
-        //         withSonarQubeEnv('sonar-public') { // If you have configured more than one global server connection, you can specify its name
-        //             sh './mvnw clean package sonar:sonar'
-        //         }
-        //     }
-        //     post {
-        //         success {
-        //             echo 'SONAR Success'
-        //             slackSend color: "good", message: "Sonar Success. Branch: ${GIT_BRANCH}"
-        //         }
-        //         failure {
-        //             echo 'SONAR Failed'
-        //             slackSend color: "danger", message: "Sonar Failed."
-        //         }
-        //     }
-        // }
-        // stage('uploadNexus'){
-        //     steps{
-        //         echo 'Uploading to Nexus...'
-        //         slackSend color: "warning", message: "Uploading to Nexus..."
-        //         sh './mvnw clean install -e'
-        //         nexusPublisher nexusInstanceId: 'nexus01', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: './build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
-        //         // nexusPublisher nexusInstanceId: 'nexus01', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: './build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'fancyWidget', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
-        //         // nexusPublisher nexusInstanceId: 'nexus01', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: '${WORKSPACE}/build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'fancyWidget', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
-        //         // nexusPublisher nexusInstanceId: 'nexus', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: '${WORKSPACE}/build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'fancyWidget', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
-        //         //, tagName: 'build-125'
+            }
+            post {
+                success {
+                    echo 'Build Success'
+                    slackSend color: "good", message: "Build Success"
+                }
+                failure {
+                    echo 'Build Failed'
+                    slackSend color: "danger", message: "Build Failed"
+                }
+            }
+        }
+        stage('Test'){
+            steps{
+                echo 'Testing...'
+                slackSend color: "warning", message: "Testing..."
+                sh './mvnw test -e'
+            }
+            post {
+                success {
+                    echo 'Test Success'
+                    slackSend color: "good", message: "Test Success"
+                }
+                failure {
+                    echo 'Test Failed'
+                    slackSend color: "danger", message: "Test Failed"
+                }
+            }
+        }
+        stage('Package'){
+            steps{
+                echo 'Packaging...'
+                slackSend color: "warning", message: "Packaging..."
+                sh './mvnw package -e'
+            }
+            post {
+                success {
+                    echo 'Package Success'
+                    slackSend color: "good", message: "Package Success"
+                }
+                failure {
+                    echo 'Package Failed'
+                    slackSend color: "danger", message: "Package Failed"
+                }
+            }
+        }
+        stage('Sonar'){
+            steps{
+                echo 'Sonar...'
+                withSonarQubeEnv('sonar-public') { // If you have configured more than one global server connection, you can specify its name
+                    sh './mvnw clean package sonar:sonar'
+                }
+            }
+            post {
+                success {
+                    echo 'SONAR Success'
+                    slackSend color: "good", message: "Sonar Success. Branch: ${GIT_BRANCH}"
+                }
+                failure {
+                    echo 'SONAR Failed'
+                    slackSend color: "danger", message: "Sonar Failed."
+                }
+            }
+        }
+        stage('uploadNexus'){
+            steps{
+                echo 'Uploading to Nexus...'
+                slackSend color: "warning", message: "Uploading to Nexus..."
+                sh './mvnw clean install -e'
+                nexusPublisher nexusInstanceId: 'nexus01', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: './build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
+                // nexusPublisher nexusInstanceId: 'nexus01', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: './build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'fancyWidget', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
+                // nexusPublisher nexusInstanceId: 'nexus01', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: '${WORKSPACE}/build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'fancyWidget', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
+                // nexusPublisher nexusInstanceId: 'nexus', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: '${WORKSPACE}/build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'fancyWidget', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
+                //, tagName: 'build-125'
 
-        //     }
-        //     post {
-        //         success {
-        //             echo 'Upload Success'
-        //             slackSend color: "good", message: "Upload Success"
-        //         }
-        //         failure {
-        //             echo 'Upload Failed'
-        //             slackSend color: "danger", message: "Upload Failed"
-        //         }
-        //     }
+            }
+            post {
+                success {
+                    echo 'Upload Success'
+                    slackSend color: "good", message: "Upload Success"
+                }
+                failure {
+                    echo 'Upload Failed'
+                    slackSend color: "danger", message: "Upload Failed"
+                }
+            }
 
-        // }
-        // stage('downloadNexusArtefact'){
-        //     steps{
-        //         // cleanWs()    
-        //         echo 'Download...'
-        //         slackSend color: "warning", message: "Download..."
-        //         sh 'curl -X GET -u admin:1qazxsw2 https://nexus.danilovidalm.com/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar -O'
-        //         // sh 'curl -X GET -u admin:admin https://nexus.danilovidalm.com/repository/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar -O'
-        //     }
-        //     post {
-        //         success {
-        //             echo 'Download Success'
-        //             slackSend color: "good", message: "Deploy Success"
-        //         }
-        //         failure {
-        //             echo 'Download Failed'
-        //             slackSend color: "danger", message: "Deploy Failed"
-        //         }
-        //     }
-        // }
+        }
+        stage('downloadNexusArtefact'){
+            steps{
+                // cleanWs()    
+                echo 'Download...'
+                slackSend color: "warning", message: "Download..."
+                sh 'curl -X GET -u admin:1qazxsw2 https://nexus.danilovidalm.com/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar -O'
+                // sh 'curl -X GET -u admin:admin https://nexus.danilovidalm.com/repository/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar -O'
+            }
+            post {
+                success {
+                    echo 'Download Success'
+                    slackSend color: "good", message: "Deploy Success"
+                }
+                failure {
+                    echo 'Download Failed'
+                    slackSend color: "danger", message: "Deploy Failed"
+                }
+            }
+        }
         stage('Run Jar'){
             steps{
                 echo 'Running Jar...'
@@ -159,49 +156,49 @@ pipeline {
                 sh 'cat reponse'
                 scritp {
                     println "hello - param yes"
-                    // def reponse = readFile 'reponse'
-                    // if[[reponse.contains("200"]]{
-                    //     echo 'CURL Success'
-                    //     slackSend color: "good", message: "CURL Success status 200"
-                    // }else{
-                    //     echo 'CURL Failed'
-                    //     slackSend color: "danger", message: "CURL Failed"
-                    //     // currentBuild.result = 'FAILURE'
-                    //     currentBuild.result = 'FAILURE'
-                    // }
+                    def reponse = readFile 'reponse'
+                    if[[reponse.contains("200"]]{
+                        echo 'CURL Success'
+                        slackSend color: "good", message: "CURL Success status 200"
+                    }else{
+                        echo 'CURL Failed'
+                        slackSend color: "danger", message: "CURL Failed"
+                        // currentBuild.result = 'FAILURE'
+                        currentBuild.result = 'FAILURE'
+                    }
                 }
             }
-            // post {
-            //     success {
-            //         echo 'CURL Success'
-            //         slackSend color: "good", message: "CURL Success"
-            //     }
-            //     failure {
-            //         echo 'CURL Failed'
-            //         slackSend color: "danger", message: "CURL Failed"
-            //     }
-            // }
+            post {
+                success {
+                    echo 'CURL Success'
+                    slackSend color: "good", message: "CURL Success"
+                }
+                failure {
+                    echo 'CURL Failed'
+                    slackSend color: "danger", message: "CURL Failed"
+                }
+            }
         }
-        //updaload nexus jar
-        // stage('Upload jar to nexus')
-        // {
-        //     steps{
-        //         echo 'Uploading to Nexus...'
-        //         slackSend color: "warning", message: "Uploading to Nexus..."
-        //         // sh 'cp ./DevOpsUsach2020-0.0.1.jar DevOpsUsach2020-1.0.0.jar'
-        //         nexusPublisher nexusInstanceId: 'nexus01', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: './DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '1.0.0']]]
-        //     }
-        //     post {
-        //         success {
-        //             echo 'Upload Success'
-        //             slackSend color: "good", message: "Upload Success"
-        //         }
-        //         failure {
-        //             echo 'Upload Failed'
-        //             slackSend color: "danger", message: "Upload Failed"
-        //         }
-        //     }
-        // }
+        updaload nexus jar
+        stage('Upload jar to nexus')
+        {
+            steps{
+                echo 'Uploading to Nexus...'
+                slackSend color: "warning", message: "Uploading to Nexus..."
+                // sh 'cp ./DevOpsUsach2020-0.0.1.jar DevOpsUsach2020-1.0.0.jar'
+                nexusPublisher nexusInstanceId: 'nexus01', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: './DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '1.0.0']]]
+            }
+            post {
+                success {
+                    echo 'Upload Success'
+                    slackSend color: "good", message: "Upload Success"
+                }
+                failure {
+                    echo 'Upload Failed'
+                    slackSend color: "danger", message: "Upload Failed"
+                }
+            }
+        }
         //download jar
         //run jar
         //curl localhost:8081

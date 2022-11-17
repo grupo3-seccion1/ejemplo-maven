@@ -46,7 +46,12 @@ node {
     }catch (e) {
         slackSend color: "danger", message: "Sonar Failure. Error : " + e 
         throw e
-    } finally { }
+    } finally { 
+        // stage('Respuesta Sonar'){
+        //     waitForQualityGate abortPipeline: true, credentialsId: 'token-sonar'
+        // }
+    }
+
     try {
         stage('Upload Nexus'){
             echo 'Upload Nexus...'
