@@ -149,6 +149,13 @@ pipeline {
                 }
             }
         }
+        stage('sleep'){
+            steps{
+                echo 'Sleeping...'
+                sleep time: 10, unit: 'SECONDS'
+                sh 'ps -ef | grep java'
+            }
+        }
         stage('CURL Localhost:8081'){
             steps{
                 sh 'sleep 10'
