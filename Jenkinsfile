@@ -3,9 +3,8 @@ node {
     def responseStatus = ''
     stage('INFO'){
         // echo env
-        slackSend color: "warning", message: "INFO: Prueba Taller 3 - Modulo 4 Branch: " + env.BRANCH_NAME + " - CHANGE_AUTHOR_DISPLAY_NAME : " + env.CHANGE_AUTHOR_DISPLAY_NAME + " - TAG_DATE - " + env.TAG_DATE + " - GIT_COMMIT - " + env.GIT_COMMIT
-        slackSend color: "warning", message: "INFO: Prueba Taller 3 - Modulo 4 Branch: " + env.BRANCH_NAME + " - CHANGE_AUTHOR_DISPLAY_NAME : ${CHANGE_AUTHOR_DISPLAY_NAME}  - TAG_DATE - ${TAG_DATE}  - GIT_COMMIT - ${GIT_COMMIT}"
-        // slackSend color: "good", message: "Info Success. hash commit : " + e
+        slackSend color: "warning", message: "INFO: Prueba Taller 3 - Modulo 4 Branch: " + env.BRANCH_NAME
+         // slackSend color: "good", message: "Info Success. hash commit : " + e
     }
     try {
         stage('Build'){
