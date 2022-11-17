@@ -136,7 +136,7 @@ pipeline {
             steps{
                 echo 'Running Jar...'
                 slackSend color: "warning", message: "Running Jar..."
-                sh 'nohup java -jar ./DevOpsUsach2020-0.0.1.jar &'
+                sh 'nohup java -jar ./DevOpsUsach2020-0.0.1.jar&'
             }
             post {
                 success {
