@@ -8,6 +8,17 @@ node {
         slackSend color: "warning", message: "INFO: Prueba Taller 3 - Modulo 4 Branch: " + env.BRANCH_NAME + ' Fecha : ' + now
          // slackSend color: "good", message: "Info Success. hash commit : " + e
     }
+    try {
+        stage('Build'){
+            echo "Building"
+            sh 'mvn clean compile -e'
+        }
+    }catch (e) {
+        responseStatus = 'FAILURE'
+        throw e
+        slackSend color: "good", message: "Error : " + e
+    } finally {
+    }
     // try {
     //     stage('Build'){
     //         echo "Building"
