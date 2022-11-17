@@ -155,8 +155,11 @@ pipeline {
                 echo 'CURL...'
                 slackSend color: "warning", message: "CURL..."
                 // sh 'curl -I GET http://localhost:8081/rest/mscovid/test?msg=testing > response.txt'
-                sh 'curl -s -o /dev/null/ -w "%{http_code}\n" http://localhost:8081/rest/mscovid/test?msg=testing > response.txt'
+                sh 'curl -s -o /dev/null/ -w \"%{http_code}\n\" http://localhost:8081/rest/mscovid/test?msg=testing > response.txt'
                 // responseStatus = sh(script: 'cat response.txt | grep HTTP/1.1 | cut -d " " -f2', returnStdout: true).trim()
+                // script{
+                //     responseStatus = sh'curl -s -o /dev/null/ -w \"%{http_code}\n\" http://localhost:8081/rest/mscovid/test?msg=testing > response.txt'
+                // }
 
             }
             post {
