@@ -1,8 +1,5 @@
 
 node {
-    tools { 
-        maven 'maven'
-    }
     def now = new Date()
     
     def responseStatus = ''
@@ -14,7 +11,7 @@ node {
     try {
         stage('Build'){
             echo "Building"
-            sh 'mvn clean compile -e'
+            maven clean compile -e
         }
         slackSend color: "good", message: "Build Success"
         stage('Test'){
