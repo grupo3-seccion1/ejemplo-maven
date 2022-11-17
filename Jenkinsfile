@@ -11,7 +11,7 @@ node {
     try {
         stage('Build'){
             echo "Building"
-            maven clean compile -e
+            sh 'mvn clean compile -e'
         }
         slackSend color: "good", message: "Build Success"
         stage('Test'){
