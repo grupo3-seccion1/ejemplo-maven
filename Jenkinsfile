@@ -9,23 +9,23 @@ node {
     try {
         stage('Build'){
             echo "Building"
-            sh './mvnw clean compile -e'
+            sh 'mvnw clean compile -e'
         }
         slackSend color: "good", message: "Build Success"
         stage('Test'){
             echo "Testing"
-            sh './mvnw test -e'
+            sh 'mvnw test -e'
         }
         slackSend color: "good", message: "Test Success"
         stage('Package'){
             echo "Packaging"
-            sh './mvnw package -e'
+            sh 'mvnw package -e'
         }
         slackSend color: "good", message: "Packaging Success"
         stage('Sonar'){
             echo 'Sonar...'
             withSonarQubeEnv('sonar-public') { // If you have configured more than one global server connection, you can specify its name
-                sh './mvnw clean package sonar:sonar'
+                sh 'mvnw clean package sonar:sonar'
             }
         }
         slackSend color: "good", message: "Sonar Success"
