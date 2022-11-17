@@ -1,25 +1,30 @@
 
 node {
+    tools { 
+        maven 'maven'
+    }
+    def now = new Date()
+    
     def responseStatus = ''
     stage('INFO'){
         // echo env
-        slackSend color: "warning", message: "INFO: Prueba Taller 3 - Modulo 4 Branch: " + env.BRANCH_NAME
+        slackSend color: "warning", message: "INFO: Prueba Taller 3 - Modulo 4 Branch: " + env.BRANCH_NAME + ' Fecha : ' + now
          // slackSend color: "good", message: "Info Success. hash commit : " + e
     }
     try {
         stage('Build'){
             echo "Building"
-            sh 'mvnw clean compile -e'
+            sh 'mvn clean compile -e'
         }
         slackSend color: "good", message: "Build Success"
         stage('Test'){
             echo "Testing"
-            sh 'mvnw test -e'
+            sh 'mvn test -e'
         }
         slackSend color: "good", message: "Test Success"
         stage('Package'){
             echo "Packaging"
-            sh 'mvnw package -e'
+            sh 'mvn package -e'
         }
         slackSend color: "good", message: "Packaging Success"
         stage('Sonar'){
