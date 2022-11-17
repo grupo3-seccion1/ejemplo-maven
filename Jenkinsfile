@@ -152,17 +152,16 @@ pipeline {
         stage('sleep'){
             steps{
                 echo 'Sleeping...'
-                sleep time: 10, unit: 'SECONDS'
+                sleep time: 20, unit: 'SECONDS'
                 sh 'ps -ef | grep java'
             }
         }
         stage('CURL Localhost:8081'){
             steps{
-                sh 'sleep 10'
                 echo 'CURL...'
                 slackSend color: "warning", message: "CURL..."
-                // sh 'curl -I GET http://localhost:8081/rest/mscovid/test?msg=testing > response.txt'
-                sh 'curl -s -o /dev/null/ -w \"%{http_code}\" http://localhost:8081/rest/mscovid/test?msg=testing > response.txt'
+                sh 'curl -I GET http://localhost:8081/rest/mscovid/test?msg=testing > response.txt'
+                // sh 'curl -s -o /dev/null/ -w \"%{http_code}\" http://localhost:8081/rest/mscovid/test?msg=testing > response.txt'
                 // responseStatus = sh(script: 'cat response.txt | grep HTTP/1.1 | cut -d " " -f2', returnStdout: true).trim()
                 // script{
                 //     responseStatus = sh'curl -s -o /dev/null/ -w \"%{http_code}\n\" http://localhost:8081/rest/mscovid/test?msg=testing > response.txt'
