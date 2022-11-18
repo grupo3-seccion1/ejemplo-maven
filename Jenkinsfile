@@ -162,7 +162,9 @@ pipeline {
                 slackSend color: "warning", message: "CURL..."
                 // sh 'curl -I http://localhost:8081/rest/mscovid/test?msg=testing > response.txt'
                 sh 'curl -s -o /dev/null/ -w \"%{http_code}\" http://localhost:8081/rest/mscovid/test?msg=testing > response.txt'
-                responseStatus = readFile 'response.txt'
+                scrtip {
+                    responseStatus = readFile 'response.txt'
+                }
                 
                 // responseStatus = sh(script: 'cat response.txt | grep HTTP/1.1 | cut -d " " -f2', returnStdout: true).trim()
                 // script{
