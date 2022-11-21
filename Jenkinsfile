@@ -7,6 +7,9 @@ node {
          // slackSend color: "good", message: "Info Success. hash commit : " + e
     }
     try {
+        stage('Checkout') {
+            checkout scm
+        }
         stage('Build'){
             echo "Building"
             sh './mvnw clean compile -e'
